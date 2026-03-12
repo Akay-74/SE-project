@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+    /* Nature Green Theme Colors */
+    --color-primary: #10b981;
+    --color-primary-dark: #059669;
+    --color-primary-light: #34d399;
+    --color-secondary: #f59e0b;
+    --color-accent: #14b8a6;
+
+    /* Background Colors */
+    --color-bg-primary: #0a1612;
+    --color-bg-secondary: #1a2e27;
+    --color-surface: #1a2e27;
+
+    /* Text Colors */
+    --color-text-primary: #f1f5f9;
+    --color-text-secondary: #cbd5e1;
+    --color-text-muted: #94a3b8;
+}
