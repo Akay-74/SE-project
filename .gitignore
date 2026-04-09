@@ -28,3 +28,12 @@ Thumbs.db
 # Testing
 coverage/
 .nyc_output/
+
+# Temporary / Draft Scripts and Data
+stitch_*.json
+test_images.js
+check_urls.js
+gitshow.txt
+backend/run_seed.bat
+backend/fix-index.json
+backend/x.rating

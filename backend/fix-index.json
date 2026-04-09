@@ -1,5 +1,0 @@
-{
-    "scripts": {
-        "fix-index": "node scripts/fixGoogleIdIndex.js"
-    }
-}
