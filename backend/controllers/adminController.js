@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import Hotel from '../models/Hotel.js';
 import Booking from '../models/Booking.js';
+import bcrypt from 'bcryptjs';
 
 // @desc    Get all users
 // @route   GET /api/admin/users
@@ -117,6 +118,198 @@ export const deactivateUser = async (req, res) => {
     }
 };
 
+// @desc    Reactivate user
+// @route   PUT /api/admin/users/:id/reactivate
+// @access  Private (Admin)
+export const reactivateUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { isActive: true },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        res.json({
+            success: true,
+            data: user,
+            message: 'User reactivated successfully',
+        });
+    } catch (error) {
+        console.error('Error reactivating user:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error reactivating user',
+        });
+    }
+};
+
+// @desc    Reset user password
+// @route   PUT /api/admin/users/:id/reset-password
+// @access  Private (Admin)
+export const resetUserPassword = async (req, res) => {
+    try {
+        const { newPassword } = req.body;
+
+        if (!newPassword || newPassword.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password must be at least 6 characters',
+            });
+        }
+
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        if (user.authProvider === 'google') {
+            return res.status(400).json({
+                success: false,
+                message: 'Cannot reset password for Google OAuth accounts',
+            });
+        }
+
+        user.password = newPassword; // pre-save hook will hash it
+        await user.save();
+
+        res.json({
+            success: true,
+            message: 'Password reset successfully',
+        });
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error resetting password',
+        });
+    }
+};
+
+// @desc    Assign managed hotels to a manager user
+// @route   PUT /api/admin/users/:id/managed-hotels
+// @access  Private (Admin)
+export const assignManagedHotels = async (req, res) => {
+    try {
+        const { hotelIds } = req.body;
+
+        if (!Array.isArray(hotelIds)) {
+            return res.status(400).json({
+                success: false,
+                message: 'hotelIds must be an array',
+            });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.params.id,
+            { managedHotels: hotelIds },
+            { new: true }
+        )
+            .select('-__v')
+            .populate('managedHotels', 'name location.city');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        // Update hotel.manager field for newly assigned hotels
+        if (hotelIds.length > 0) {
+            await Hotel.updateMany(
+                { _id: { $in: hotelIds } },
+                { manager: user._id }
+            );
+        }
+
+        res.json({
+            success: true,
+            data: user,
+            message: 'Managed hotels updated successfully',
+        });
+    } catch (error) {
+        console.error('Error assigning managed hotels:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error assigning managed hotels',
+        });
+    }
+};
+
+// @desc    Create a new manager account
+// @route   POST /api/admin/users/create-manager
+// @access  Private (Admin)
+export const createManager = async (req, res) => {
+    try {
+        const { name, email, password, hotelIds = [] } = req.body;
+
+        if (!name || !email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: 'Name, email and password are required',
+            });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password must be at least 6 characters',
+            });
+        }
+
+        const existing = await User.findOne({ email });
+        if (existing) {
+            return res.status(400).json({
+                success: false,
+                message: 'A user with this email already exists',
+            });
+        }
+
+        const user = await User.create({
+            name,
+            email,
+            password,
+            role: 'manager',
+            authProvider: 'local',
+            managedHotels: hotelIds,
+        });
+
+        if (hotelIds.length > 0) {
+            await Hotel.updateMany(
+                { _id: { $in: hotelIds } },
+                { manager: user._id }
+            );
+        }
+
+        const populatedUser = await User.findById(user._id)
+            .select('-__v')
+            .populate('managedHotels', 'name location.city');
+
+        res.status(201).json({
+            success: true,
+            data: populatedUser,
+            message: 'Manager account created successfully',
+        });
+    } catch (error) {
+        console.error('Error creating manager:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error creating manager account',
+        });
+    }
+};
+
 // @desc    Get all hotels (admin)
 // @route   GET /api/admin/hotels
 // @access  Private (Admin)
@@ -148,6 +341,37 @@ export const getAllHotels = async (req, res) => {
         res.status(500).json({
             success: false,
             message: 'Error fetching hotels',
+        });
+    }
+};
+
+// @desc    Deactivate / delete a hotel (admin)
+// @route   DELETE /api/admin/hotels/:id
+// @access  Private (Admin)
+export const deleteHotel = async (req, res) => {
+    try {
+        const hotel = await Hotel.findByIdAndUpdate(
+            req.params.id,
+            { isActive: false },
+            { new: true }
+        );
+
+        if (!hotel) {
+            return res.status(404).json({
+                success: false,
+                message: 'Hotel not found',
+            });
+        }
+
+        res.json({
+            success: true,
+            message: 'Hotel deactivated successfully',
+        });
+    } catch (error) {
+        console.error('Error deleting hotel:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error deactivating hotel',
         });
     }
 };
@@ -191,7 +415,6 @@ export const generateBookingReport = async (req, res) => {
         };
 
         if (format === 'csv') {
-            // Generate CSV
             const csv = [
                 'Booking Reference,Hotel,Room Type,Guest Name,Check-In,Check-Out,Total Price,Status,Payment Status',
                 ...bookings.map(
@@ -227,6 +450,7 @@ export const generateBookingReport = async (req, res) => {
 export const getDashboardStats = async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
+        const totalManagers = await User.countDocuments({ role: 'manager' });
         const totalHotels = await Hotel.countDocuments({ isActive: true });
         const totalBookings = await Booking.countDocuments();
         const totalRevenue = await Booking.aggregate([
@@ -245,6 +469,7 @@ export const getDashboardStats = async (req, res) => {
             success: true,
             data: {
                 totalUsers,
+                totalManagers,
                 totalHotels,
                 totalBookings,
                 totalRevenue: totalRevenue[0]?.total || 0,

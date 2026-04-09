@@ -3,7 +3,12 @@ import {
     getAllUsers,
     updateUserRole,
     deactivateUser,
+    reactivateUser,
+    resetUserPassword,
+    assignManagedHotels,
+    createManager,
     getAllHotels,
+    deleteHotel,
     generateBookingReport,
     getDashboardStats,
 } from '../controllers/adminController.js';
@@ -18,9 +23,14 @@ router.use(authenticate, authorizeRoles('admin'));
 router.get('/users', getAllUsers);
 router.put('/users/:id/role', updateUserRole);
 router.put('/users/:id/deactivate', deactivateUser);
+router.put('/users/:id/reactivate', reactivateUser);
+router.put('/users/:id/reset-password', resetUserPassword);
+router.put('/users/:id/managed-hotels', assignManagedHotels);
+router.post('/users/create-manager', createManager);
 
 // Hotel management
 router.get('/hotels', getAllHotels);
+router.delete('/hotels/:id', deleteHotel);
 
 // Reports
 router.get('/reports/bookings', generateBookingReport);

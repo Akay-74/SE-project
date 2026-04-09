@@ -60,9 +60,7 @@ const userSchema = new mongoose.Schema(
 );
 
 // Index for faster queries
-userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });
-userSchema.index({ googleId: 1 });
 
 // Ensure avatar is set before saving
 userSchema.pre('save', function (next) {

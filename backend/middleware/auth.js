@@ -85,7 +85,7 @@ export const authorizeRoles = (...roles) => {
 // Authorize hotel manager for specific hotel
 export const authorizeHotelManager = async (req, res, next) => {
     try {
-        const hotelId = req.params.hotelId || req.body.hotel;
+        const hotelId = req.params.hotelId || req.body.hotel || req.params.id;
 
         if (!hotelId) {
             return res.status(400).json({
