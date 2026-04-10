@@ -57,3 +57,30 @@ npm run preview      # Preview production build
 - Payment fields exist in schema but not implemented
 - Frontend uses Vite with React 18 and Tailwind CSS
 - Seed command populates DB with sample hotels, rooms, and users
+
+## Render Deployment
+
+### Backend (Web Service)
+- **Build Command**: `npm install`
+- **Start Command**: `npm start`
+- **Environment Variables**:
+  - `PORT` — Render auto-assigns, leave unset or set to `5000`
+  - `MONGODB_URI` — Atlas connection string
+  - `JWT_SECRET` — Strong random secret
+  - `FRONTEND_URL` — Your frontend domain (e.g., `https://kamra.com`)
+  - `GOOGLE_CLIENT_ID` — From Google Cloud Console
+  - `GOOGLE_CLIENT_SECRET` — From Google Cloud Console
+  - `GOOGLE_CALLBACK_URL` — `https://<your-backend>.onrender.com/api/auth/google/callback`
+  - `SESSION_SECRET` — Strong random secret
+  - `NODE_ENV` — `production`
+
+### Frontend (Static Site)
+- **Build Command**: `npm install && npm run build`
+- **Publish Directory**: `dist`
+- **Environment Variables**:
+  - `VITE_API_URL` — `https://<your-backend>.onrender.com/api`
+
+### Google OAuth Setup
+1. In Google Cloud Console → Credentials → OAuth 2.0 Client IDs
+2. Add **Authorized redirect URIs**: `https://<your-backend>.onrender.com/api/auth/google/callback`
+3. Add **Authorized JavaScript origins**: `https://<your-frontend-domain>.com`

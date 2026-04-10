@@ -24,8 +24,16 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
-// Security middleware
-app.use(helmet());
+// Trust proxy for Render (TLS termination at load balancer)
+app.set('trust proxy', 1);
+
+// Security middleware - relax for production cross-origin setup
+app.use(
+    helmet({
+        contentSecurityPolicy: false, // Disable CSP - frontend is on a different origin and loads Google Fonts
+        crossOriginResourcePolicy: { policy: 'cross-origin' }, // Allow frontend to load backend resources
+    })
+);
 
 // Initialize Socket.io
 const io = new Server(httpServer, {
