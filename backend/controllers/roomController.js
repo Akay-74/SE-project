@@ -126,9 +126,19 @@ export const updateRoom = async (req, res) => {
             });
         }
 
+        // Only allow specific fields to be updated to prevent mass assignment
+        const allowedUpdates = ['name', 'description', 'pricePerNight', 'roomType', 'amenities', 'images'];
+        const updates = {};
+        allowedUpdates.forEach(field => {
+            if (req.body[field] !== undefined) {
+                updates[field] = req.body[field];
+            }
+        });
+        updates.version = room.version + 1; // Preserve version increment for optimistic locking
+        
         const updatedRoom = await Room.findByIdAndUpdate(
             req.params.id,
-            { ...req.body, version: room.version + 1 },
+            updates,
             { new: true, runValidators: true }
         );
 

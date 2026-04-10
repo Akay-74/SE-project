@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import connectDB from './config/database.js';
 import configurePassport from './config/passport.js';
 import setupAvailabilitySocket from './sockets/availabilitySocket.js';
@@ -23,10 +24,13 @@ dotenv.config();
 const app = express();
 const httpServer = createServer(app);
 
+// Security middleware
+app.use(helmet());
+
 // Initialize Socket.io
 const io = new Server(httpServer, {
     cors: {
-        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+        origin: process.env.FRONTEND_URL,
         credentials: true,
     },
 });
@@ -40,7 +44,7 @@ configurePassport();
 // Middleware
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+        origin: process.env.FRONTEND_URL,
         credentials: true,
     })
 );

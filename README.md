@@ -42,7 +42,7 @@ A modern, full-stack hotel room booking platform for the Indian market with real
 2. Create a new project or select existing
 3. Enable Google+ API
 4. Create OAuth 2.0 credentials
-5. Add authorized redirect URI: `http://localhost:5000/api/auth/google/callback`
+5. Add authorized redirect URI: `https://your-backend-domain.com/api/auth/google/callback`
 6. Copy Client ID and Client Secret
 
 ### Installation
@@ -66,13 +66,13 @@ A modern, full-stack hotel room booking platform for the Indian market with real
 4. **Edit backend/.env with your credentials:**
    ```env
    PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/room-booking
+    MONGODB_URI=mongodb+srv://aayaankhan8310875137_db_user:jKzCu2W4PwP4vf9v@kamracluster.vo3dbtm.mongodb.net/?appName=KamraCluster
    JWT_SECRET=your-super-secret-jwt-key-change-this
-   FRONTEND_URL=http://localhost:5173
+    FRONTEND_URL=your-frontend-url
    
    GOOGLE_CLIENT_ID=your-google-client-id
    GOOGLE_CLIENT_SECRET=your-google-client-secret
-   GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+    GOOGLE_CALLBACK_URL=https://your-backend-domain.com/api/auth/google/callback
    
    SESSION_SECRET=your-session-secret
    NODE_ENV=development
@@ -87,7 +87,7 @@ A modern, full-stack hotel room booking platform for the Indian market with real
 6. **Create frontend .env file** (optional)
    ```bash
    # frontend/.env
-   VITE_API_URL=http://localhost:5000/api
+    VITE_API_URL=https://your-backend-domain.com/api
    ```
 
 ### Running the Application
@@ -102,14 +102,14 @@ A modern, full-stack hotel room booking platform for the Indian market with real
    cd backend
    npm run dev
    ```
-   Server will run on http://localhost:5000
+    Server will run on http://localhost:5000 (for local development)
 
 3. **Start Frontend** (in a new terminal)
    ```bash
    cd frontend
    npm run dev
    ```
-   Frontend will run on http://localhost:5173
+    Frontend will run on http://localhost:5173 (for local development)
 
 4. **Access the application**
    Open http://localhost:5173 in your browser

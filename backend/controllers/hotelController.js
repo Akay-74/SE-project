@@ -7,17 +7,17 @@ import User from '../models/User.js';
 // @access  Public
 export const searchHotels = async (req, res) => {
     try {
-        const { city, name, minPrice, maxPrice, amenities, rating, page = 1, limit = 10 } = req.query;
+        const { city = '', name = '', minPrice, maxPrice, amenities = '', rating, page = 1, limit = 10 } = req.query;
 
         const query = { isActive: true };
 
-        // Filter by city
+        // Filter by city - use MongoDB's $regex to prevent ReDoS
         if (city) {
-            query['location.city'] = new RegExp(city, 'i');
+            query['location.city'] = { $regex: city, $options: 'i' };
         }
 
-        // Filter by name (text search)
-        if (name) {
+        // Filter by name (text search) - only if name is provided and not empty
+        if (name && name.trim() !== '') {
             query.$text = { $search: name };
         }
 
@@ -165,9 +165,18 @@ export const updateHotel = async (req, res) => {
             });
         }
 
+        // Only allow specific fields to be updated to prevent mass assignment
+        const allowedUpdates = ['name', 'description', 'location', 'images', 'amenities'];
+        const updates = {};
+        allowedUpdates.forEach(field => {
+            if (req.body[field] !== undefined) {
+                updates[field] = req.body[field];
+            }
+        });
+        
         const updatedHotel = await Hotel.findByIdAndUpdate(
             req.params.id,
-            req.body,
+            updates,
             { new: true, runValidators: true }
         );
 

@@ -18,11 +18,19 @@ export const authenticate = async (req, res, next) => {
 
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log('Token decoded:', decoded);
+        
+        // Log debug info only in development
+        if (process.env.NODE_ENV !== 'production') {
+            console.log('Token decoded:', decoded);
+        }
 
         // Get user from token
         const user = await User.findById(decoded.id).select('-__v');
-        console.log('User found:', user);
+        
+        // Log debug info only in development
+        if (process.env.NODE_ENV !== 'production') {
+            console.log('User found:', user);
+        }
 
         if (!user) {
             return res.status(401).json({
