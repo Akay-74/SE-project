@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#515c71",
+                      "on-surface": "#191c1d",
+                      "error-container": "#ffdad6",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "secondary-container": "#fea619",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#3c475a",
+                      "on-secondary-container": "#684000",
+                      "inverse-primary": "#68dba9",
+                      "surface-tint": "#006c4a",
+                      "outline": "#6d7a72",
+                      "on-secondary-fixed": "#2a1700",
+                      "on-tertiary": "#ffffff",
+                      "surface-dim": "#d9dadb",
+                      "secondary-fixed": "#ffddb8",
+                      "surface": "#f8f9fa",
+                      "error": "#ba1a1a",
+                      "on-error": "#ffffff",
+                      "primary-fixed": "#85f8c4",
+                      "surface-container-low": "#f3f4f5",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "on-primary-container": "#f5fff7",
+                      "secondary": "#855300",
+                      "surface-container-highest": "#e1e3e4",
+                      "primary-container": "#00855d",
+                      "inverse-surface": "#2e3132",
+                      "on-background": "#191c1d",
+                      "tertiary-fixed-dim": "#bcc7de",
+                      "on-tertiary-container": "#fefcff",
+                      "surface-variant": "#e1e3e4",
+                      "primary": "#006948",
+                      "outline-variant": "#bccac0",
+                      "on-tertiary-fixed": "#111c2d",
+                      "tertiary-container": "#6a758a",
+                      "on-surface-variant": "#3d4a42",
+                      "surface-container": "#edeeef",
+                      "background": "#f8f9fa",
+                      "surface-bright": "#f8f9fa",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed-dim": "#68dba9",
+                      "inverse-on-surface": "#f0f1f2",
+                      "on-primary-fixed": "#002114",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "tertiary-fixed": "#d8e3fb",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed-variant": "#005137"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Inter"],
+                      "body": ["Inter"],
+                      "label": ["Inter"]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Anchor -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl shadow-[0_12px_40px_rgba(25,28,29,0.04)]">
+<div class="flex items-center justify-between px-12 h-20 max-w-[1920px] mx-auto font-['Inter'] tracking-tight">
+<div class="text-2xl font-black tracking-tighter text-emerald-900 dark:text-emerald-50">Kamra.com</div>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-emerald-800 transition-colors" href="#">Hotels</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-emerald-800 transition-colors" href="#">Experiences</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-emerald-800 transition-colors" href="#">Magazine</a>
+<a class="text-zinc-500 dark:text-zinc-400 hover:text-emerald-800 transition-colors" href="#">Support</a>
+</div>
+<div class="flex items-center space-x-6">
+<button class="text-zinc-500 dark:text-zinc-400 hover:text-emerald-800 transition-colors">Sign In</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-DEFAULT font-medium hover:opacity-90 transition-all duration-200">Manage Bookings</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-24 px-12 max-w-7xl mx-auto">
+<!-- Header Section -->
+<header class="mb-16">
+<div class="flex items-center gap-2 text-on-surface-variant mb-6 group cursor-pointer">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span class="text-sm font-label uppercase tracking-[0.1em] group-hover:underline decoration-primary underline-offset-4">Back to Dashboard</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<h1 class="text-5xl font-extrabold tracking-tighter text-on-surface">Booking Details</h1>
+<div class="flex items-center gap-4">
+<span class="text-lg text-on-surface-variant font-medium tracking-tight">Reference: <span class="text-on-surface">KMR-8829-PX</span></span>
+<span class="bg-primary-fixed text-on-primary-fixed px-4 py-1 rounded-full text-xs font-bold tracking-widest uppercase">CONFIRMED</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-primary hover:bg-primary-container/10 px-4 py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined">share</span>
+<span class="text-sm font-semibold">Share Receipt</span>
+</button>
+<button class="flex items-center gap-2 text-primary hover:bg-primary-container/10 px-4 py-2 rounded-lg transition-colors">
+<span class="material-symbols-outlined">print</span>
+<span class="text-sm font-semibold">Print</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-8">
+<!-- 1. Hotel Details Card -->
+<div class="col-span-12 lg:col-span-8 glass-card rounded-xl rounded-tl-xl rounded-br-xl rounded-tr-DEFAULT rounded-bl-DEFAULT shadow-[0_12px_40px_rgba(25,28,29,0.04)] p-8 flex flex-col md:flex-row gap-8 items-start">
+<div class="w-full md:w-64 h-48 flex-shrink-0 rounded-lg overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Luxurious modern hotel suite with floor to ceiling windows overlooking Tokyo skyline at night with minimalist high-end furniture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNmpluHL2Oz5xCLLuqNFqyKZhY4Ur5bg3lm5ZoGKP2YIU2ka1yqXeRYOjDmQbEmcmFevsynF4m39AaHK_9tVz7G-VpgUHfJUUXJt7BN5LXk_2716C334baId7bnLvodhrG7u_Wmfw6Qbbxc56A7US2DJxfn2G0TBWlywZmFQZX0hux_yTJhYaRxZlRso7otM3LKKQNxKm8NJNhusn_rPW8KQWs9eB7GweJD6ATKo3o_yM6DrSJZAsOegc77Spv_pNdGw_RjC8uyhg"/>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label text-xs uppercase tracking-[0.2em] text-secondary mb-2">Featured Destination</p>
+<h2 class="text-3xl font-bold tracking-tight mb-2">Aman Tokyo Residences</h2>
+<div class="flex items-center gap-1 text-on-surface-variant mb-6">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="text-base">Otemachi, Tokyo, Japan</span>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-sm">5.0</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8 border-t border-outline-variant/15 pt-8">
+<div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant block mb-1">Check-in</span>
+<p class="text-lg font-bold">Oct 12, 2024</p>
+<p class="text-sm text-on-surface-variant">From 3:00 PM</p>
+</div>
+<div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant block mb-1">Check-out</span>
+<p class="text-lg font-bold">Oct 18, 2024</p>
+<p class="text-sm text-on-surface-variant">Until 12:00 PM</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 2. Stay Metadata Side Card -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<div class="glass-card rounded-xl rounded-tl-xl rounded-br-xl rounded-tr-DEFAULT rounded-bl-DEFAULT shadow-[0_12px_40px_rgba(25,28,29,0.04)] p-8">
+<h3 class="text-xl font-bold mb-6 tracking-tight">Stay Summary</h3>
+<div class="space-y-6">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Duration</span>
+<span class="font-bold">6 Nights</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Room Type</span>
+<span class="font-bold">Junior Suite</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Rooms</span>
+<span class="font-bold">1</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Guests</span>
+<span class="font-bold">2 Adults</span>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-outline-variant/15">
+<button class="w-full bg-surface-container-high text-primary font-bold py-4 rounded-DEFAULT hover:bg-surface-container-highest transition-all duration-200">
+                            Request Room Upgrade
+                        </button>
+</div>
+</div>
+<div class="bg-primary/5 p-8 rounded-xl border border-primary/10">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">concierge</span>
+<div>
+<p class="font-bold text-on-surface">Concierge Note</p>
+<p class="text-sm text-on-surface-variant mt-1">Your complimentary airport transfer has been scheduled for 2:15 PM on arrival day.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. Payment Information Card -->
+<div class="col-span-12 lg:col-span-8 glass-card rounded-xl rounded-tl-xl rounded-br-xl rounded-tr-DEFAULT rounded-bl-DEFAULT shadow-[0_12px_40px_rgba(25,28,29,0.04)] p-8">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-2xl font-bold tracking-tight">Payment Information</h3>
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase">PAID</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant block mb-3">Payment Method</span>
+<div class="flex items-center gap-3">
+<div class="w-10 h-6 bg-zinc-100 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">credit_card</span>
+</div>
+<p class="font-bold">Visa ending in 4242</p>
+</div>
+</div>
+<div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant block mb-3">Transaction ID</span>
+<p class="font-mono text-sm">TXN-9981273</p>
+</div>
+<div>
+<span class="font-label text-[10px] uppercase tracking-[0.2em] text-on-surface-variant block mb-3">Billing Date</span>
+<p class="font-bold">Sept 28, 2024</p>
+</div>
+</div>
+<div class="mt-12 pt-8 border-t border-outline-variant/15 flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div>
+<p class="text-on-surface-variant text-sm">Price includes all luxury taxes and concierge service fees.</p>
+</div>
+<div class="text-right">
+<span class="font-label text-xs uppercase tracking-[0.2em] text-on-surface-variant block mb-1">Total Amount Paid</span>
+<p class="text-4xl font-black text-on-surface">$4,280.00</p>
+</div>
+</div>
+</div>
+<!-- 4. Actions & Support Card -->
+<div class="col-span-12 lg:col-span-4 glass-card rounded-xl rounded-tl-xl rounded-br-xl rounded-tr-DEFAULT rounded-bl-DEFAULT shadow-[0_12px_40px_rgba(25,28,29,0.04)] p-8 flex flex-col justify-between">
+<div>
+<h3 class="text-xl font-bold mb-6 tracking-tight">Manage Booking</h3>
+<div class="space-y-4">
+<button class="w-full text-left px-4 py-4 rounded-lg hover:bg-surface-container-low transition-colors group flex items-center justify-between">
+<span class="font-medium">Modify Dates</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full text-left px-4 py-4 rounded-lg hover:bg-surface-container-low transition-colors group flex items-center justify-between">
+<span class="font-medium">Guest Information</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full text-left px-4 py-4 rounded-lg hover:bg-red-50 text-error transition-colors group flex items-center justify-between">
+<span class="font-medium">Cancel Booking</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">close</span>
+</button>
+</div>
+</div>
+<div class="mt-12">
+<a class="flex items-center justify-center gap-2 text-primary font-bold hover:underline decoration-2 underline-offset-8" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+                        Need Help? Contact Concierge
+                    </a>
+</div>
+</div>
+</div>
+<!-- Property Location / Map (Bleed section) -->
+<section class="mt-24">
+<h3 class="text-3xl font-bold tracking-tighter mb-8">Location &amp; Arrival</h3>
+<div class="h-96 w-full rounded-xl overflow-hidden relative shadow-inner">
+<img class="w-full h-full object-cover" data-alt="Minimalist map view of Tokyo Otemachi district with elegant gold and grey tones marking luxury landmarks" data-location="Tokyo, Japan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByypgI3mCd_X242uV8N4JEqFzQ-CNntSTYOsHeaTvp7hKP5b05Lm7RKxLLqKmFTKG7LYg53a2XLZZm3lpvLnADj4uUOG90oa63XWBNtDuPXEK2o7N5tVnQObrzMqh8z27CSRMnrqdh8y2oDAlJ1iODbVfcRNuaOmg0vh0cEwlUUUgYTMmKm9vcs7qLNza7OdRK2yYZiD_6tSR8vsO5Dd3Bm-wkyZH2kAShYLFgETNoclp6QimiD8sF8QerABLxMMF39ybxhC21AZ8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+<div class="absolute bottom-8 left-8 glass-card p-6 rounded-lg max-w-sm">
+<p class="font-bold text-on-surface">The Otemachi Tower</p>
+<p class="text-sm text-on-surface-variant mt-1">1-5-6 Otemachi, Chiyoda-ku, Tokyo 100-0004, Japan</p>
+<button class="mt-4 flex items-center gap-2 text-primary text-sm font-bold uppercase tracking-widest">
+                        Open in maps
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
+<div class="py-12 px-12 flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto font-['Inter'] text-sm tracking-wide uppercase">
+<div class="text-lg font-bold text-emerald-900 dark:text-emerald-50 mb-8 md:mb-0">Kamra.com</div>
+<div class="flex flex-wrap justify-center gap-8 mb-8 md:mb-0">
+<a class="text-zinc-400 hover:text-emerald-700 underline decoration-emerald-500 underline-offset-4" href="#">Privacy Policy</a>
+<a class="text-zinc-400 hover:text-emerald-700 underline decoration-emerald-500 underline-offset-4" href="#">Terms of Service</a>
+<a class="text-zinc-400 hover:text-emerald-700 underline decoration-emerald-500 underline-offset-4" href="#">Luxury Standards</a>
+<a class="text-zinc-400 hover:text-emerald-700 underline decoration-emerald-500 underline-offset-4" href="#">Contact Concierge</a>
+</div>
+<div class="text-zinc-400 text-xs text-center md:text-right">
+                © 2024 Kamra.com. The Digital Concierge.
+            </div>
+</div>
+</footer>
+</body></html>

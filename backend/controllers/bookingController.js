@@ -69,6 +69,14 @@ export const createBooking = async (req, res) => {
         const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
         const totalPrice = roomDetails.pricePerNight * nights * numberOfRooms;
 
+        // Simulate payment processing (2 second delay)
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        // Generate transaction ID
+        const txnTimestamp = Date.now().toString(36).toUpperCase();
+        const txnRandom = Math.random().toString(36).substring(2, 10).toUpperCase();
+        const transactionId = `TXN${txnTimestamp}${txnRandom}`;
+
         // Create booking with prepayment
         const booking = await Booking.create({
             user: req.user._id,
@@ -80,6 +88,7 @@ export const createBooking = async (req, res) => {
             totalPrice,
             guestDetails,
             paymentMethod,
+            transactionId,
             status: 'confirmed',
             paymentStatus: 'completed',
         });
@@ -203,12 +212,23 @@ export const cancelBooking = async (req, res) => {
         }
 
         booking.status = 'cancelled';
+        // If payment was completed, mark as refunded
+        if (booking.paymentStatus === 'completed') {
+            booking.paymentStatus = 'refunded';
+        }
         await booking.save();
+
+        const populatedBooking = await Booking.findById(booking._id)
+            .populate('hotel', 'name location images')
+            .populate('room', 'roomType pricePerNight')
+            .populate('user', 'name email');
 
         res.json({
             success: true,
-            data: booking,
-            message: 'Booking cancelled successfully',
+            data: populatedBooking,
+            message: booking.paymentStatus === 'refunded'
+                ? 'Booking cancelled successfully. Refund will be processed within 5-7 business days.'
+                : 'Booking cancelled successfully',
         });
     } catch (error) {
         console.error('Error cancelling booking:', error);

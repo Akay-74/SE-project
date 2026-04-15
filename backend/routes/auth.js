@@ -9,6 +9,8 @@ import {
     register,
     loginWithPassword,
     setUserRole,
+    updateProfile,
+    changePassword,
 } from '../controllers/authController.js';
 import { authenticate } from '../middleware/auth.js';
 
@@ -85,5 +87,15 @@ router.post('/logout', authenticate, logout);
 // @desc    Set user role (for OAuth users)
 // @access  Private
 router.patch('/role', authenticate, setUserRole);
+
+// @route   PUT /api/auth/profile
+// @desc    Update user profile
+// @access  Private
+router.put('/profile', authenticate, updateProfile);
+
+// @route   PUT /api/auth/change-password
+// @desc    Change password (local auth only)
+// @access  Private
+router.put('/change-password', authenticate, changePassword);
 
 export default router;

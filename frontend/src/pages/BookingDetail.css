@@ -1,0 +1,725 @@
+/* ==========================================================
+   BookingDetail.css — Pixel-perfect Stitch replica
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+
+/* ── Page Shell ── */
+.bd-page {
+    min-height: 100vh;
+    background: #f8f9fa;
+    font-family: 'Inter', sans-serif;
+    color: #191c1d;
+}
+
+.bd-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 5rem 3rem 6rem;
+}
+
+/* ── Back Link ── */
+.bd-back-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #3d4a42;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+}
+
+.bd-back-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: #006948;
+    color: #006948;
+}
+
+/* ── Flash Messages ── */
+.bd-msg {
+    padding: 0.875rem 1.25rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    animation: bdFadeIn 0.3s ease;
+}
+
+.bd-msg-success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.bd-msg-error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ── Header ── */
+.bd-header {
+    margin-bottom: 3rem;
+}
+
+.bd-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #191c1d;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.bd-ref-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bd-ref-text {
+    font-size: 1.1rem;
+    color: #3d4a42;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+.bd-ref-code {
+    color: #191c1d;
+    font-weight: 700;
+}
+
+.bd-status-pill {
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.bd-status-confirmed {
+    background: #85f8c4;
+    color: #002114;
+}
+
+.bd-status-completed {
+    background: #d8e3fb;
+    color: #111c2d;
+}
+
+.bd-status-cancelled {
+    background: #ffdad6;
+    color: #93000a;
+}
+
+.bd-status-pending {
+    background: #ffddb8;
+    color: #2a1700;
+}
+
+/* ── Bento Grid ── */
+.bd-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+/* ── Glass Card Base ── */
+.bd-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 1rem;
+    /* Asymmetric Stitch corners: TL xl, BR xl, TR default, BL default */
+    border-top-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    box-shadow: 0 12px 40px rgba(25, 28, 29, 0.04);
+    padding: 2rem;
+}
+
+/* ── 1. Hotel Card (8 cols) ── */
+.bd-card-hotel {
+    grid-column: span 8;
+}
+
+.bd-hotel-inner {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.bd-hotel-image {
+    width: 16rem;
+    height: 12rem;
+    flex-shrink: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.bd-hotel-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bd-hotel-info {
+    flex-grow: 1;
+}
+
+.bd-hotel-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.bd-label-tag {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #855300;
+    margin-bottom: 0.5rem;
+}
+
+.bd-hotel-name {
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    color: #191c1d;
+}
+
+.bd-hotel-location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #3d4a42;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.bd-hotel-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    border-top: 1px solid rgba(188, 202, 192, 0.15);
+    padding-top: 2rem;
+}
+
+.bd-micro-label {
+    display: block;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: #3d4a42;
+    margin-bottom: 0.25rem;
+}
+
+.bd-date-value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #191c1d;
+}
+
+.bd-date-sub {
+    font-size: 0.875rem;
+    color: #3d4a42;
+}
+
+/* ── 2. Stay Summary Sidebar (4 cols) ── */
+.bd-sidebar-stack {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.bd-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    color: #191c1d;
+}
+
+.bd-stay-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bd-stay-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #3d4a42;
+    font-size: 0.95rem;
+}
+
+.bd-stay-val {
+    font-weight: 700;
+    color: #191c1d;
+}
+
+/* Concierge Note */
+.bd-concierge-note {
+    background: rgba(0, 105, 72, 0.05);
+    padding: 2rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(0, 105, 72, 0.1);
+}
+
+.bd-concierge-inner {
+    display: flex;
+    gap: 1rem;
+}
+
+.bd-concierge-icon {
+    color: #006948;
+    font-size: 1.5rem;
+    font-variation-settings: 'FILL' 1;
+}
+
+.bd-concierge-title {
+    font-weight: 700;
+    color: #191c1d;
+    margin-bottom: 0.25rem;
+}
+
+.bd-concierge-text {
+    font-size: 0.875rem;
+    color: #3d4a42;
+    line-height: 1.5;
+}
+
+/* ── 3. Payment Card (8 cols) ── */
+.bd-card-payment {
+    grid-column: span 8;
+}
+
+.bd-payment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.bd-payment-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #191c1d;
+}
+
+.bd-payment-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.bd-pay-paid,
+.bd-pay-completed {
+    background: rgba(0, 105, 72, 0.1);
+    color: #006948;
+}
+
+.bd-pay-pending {
+    background: rgba(133, 83, 0, 0.1);
+    color: #855300;
+}
+
+.bd-pay-refunded {
+    background: rgba(186, 26, 26, 0.1);
+    color: #ba1a1a;
+}
+
+.bd-pay-failed {
+    background: rgba(186, 26, 26, 0.1);
+    color: #ba1a1a;
+}
+
+.bd-payment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+}
+
+.bd-pay-method {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+.bd-pay-icon-box {
+    width: 2.5rem;
+    height: 1.5rem;
+    background: #f1f5f9;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bd-pay-method-text {
+    font-weight: 700;
+    margin-top: 0.75rem;
+    color: #191c1d;
+}
+
+.bd-txn-id {
+    font-family: 'Courier New', monospace;
+    font-size: 0.875rem;
+    color: #191c1d;
+    margin-top: 0.75rem;
+}
+
+.bd-payment-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(188, 202, 192, 0.15);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.bd-pay-note {
+    font-size: 0.875rem;
+    color: #3d4a42;
+}
+
+.bd-total-block {
+    text-align: right;
+}
+
+.bd-total-amount {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: #191c1d;
+    letter-spacing: -0.03em;
+}
+
+.bd-refund-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    background: #fffbeb;
+    color: #92400e;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    border: 1px solid #fde68a;
+    margin-top: 1rem;
+}
+
+/* ── 4. Manage Booking Card (4 cols) ── */
+.bd-card-manage {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.bd-manage-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.bd-manage-btn {
+    width: 100%;
+    text-align: left;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #191c1d;
+    transition: background 0.15s;
+}
+
+.bd-manage-btn:hover {
+    background: #f3f4f5;
+}
+
+.bd-manage-btn:hover .bd-chevron {
+    transform: translateX(4px);
+}
+
+.bd-chevron {
+    color: #3d4a42;
+    font-size: 1.25rem;
+    transition: transform 0.2s;
+}
+
+.bd-manage-danger {
+    color: #ba1a1a;
+}
+
+.bd-manage-danger:hover {
+    background: rgba(186, 26, 26, 0.05);
+}
+
+.bd-concierge-link {
+    margin-top: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #006948;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.bd-concierge-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 2px;
+}
+
+/* ── 5. Review Card (full width) ── */
+.bd-card-review-full {
+    grid-column: span 12;
+}
+
+.bd-review-display {
+    padding: 1rem 1.25rem;
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+}
+
+.bd-review-stars {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+.bd-review-comment {
+    color: #3d4a42;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+.bd-review-form textarea {
+    width: 100%;
+    background: #ffffff;
+    border: 1.5px solid #bccac0;
+    border-radius: 0.75rem;
+    padding: 0.875rem 1rem;
+    color: #191c1d;
+    font-family: inherit;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.bd-review-form textarea:focus {
+    outline: none;
+    border-color: #006948;
+    box-shadow: 0 0 0 3px rgba(0, 105, 72, 0.1);
+}
+
+.bd-rating-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.bd-star-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 1.5rem;
+    transition: transform 0.15s;
+    line-height: 1;
+}
+
+.bd-star-btn:hover {
+    transform: scale(1.2);
+}
+
+.bd-rating-text {
+    margin-left: 0.5rem;
+    font-weight: 700;
+    color: #191c1d;
+}
+
+.bd-review-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+/* ── Buttons ── */
+.bd-btn-primary {
+    padding: 0.75rem 1.5rem;
+    background: #006948;
+    color: #ffffff;
+    border: none;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.bd-btn-primary:hover {
+    opacity: 0.9;
+}
+
+.bd-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bd-btn-ghost {
+    padding: 0.75rem 1.5rem;
+    background: #e7e8e9;
+    color: #006948;
+    border: none;
+    border-radius: 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.bd-btn-ghost:hover {
+    background: #e1e3e4;
+}
+
+/* ── Icons ── */
+.bd-icon-sm {
+    font-size: 0.875rem;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── Error State ── */
+.bd-error-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #fff;
+    border-radius: 1.5rem;
+    max-width: 520px;
+    margin: 2rem auto;
+    box-shadow: 0 12px 40px rgba(25, 28, 29, 0.04);
+}
+
+.bd-error-state h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.bd-error-state p {
+    color: #3d4a42;
+    margin-bottom: 2rem;
+}
+
+/* ── Animation ── */
+@keyframes bdFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+    .bd-bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bd-card-hotel,
+    .bd-card-payment,
+    .bd-card-manage,
+    .bd-card-review-full,
+    .bd-sidebar-stack {
+        grid-column: span 1;
+    }
+
+    .bd-hotel-inner {
+        flex-direction: column;
+    }
+
+    .bd-hotel-image {
+        width: 100%;
+        height: 14rem;
+    }
+
+    .bd-payment-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .bd-container {
+        padding: 3rem 1.5rem 4rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .bd-title {
+        font-size: 2rem;
+    }
+
+    .bd-ref-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .bd-hotel-dates {
+        grid-template-columns: 1fr;
+    }
+
+    .bd-payment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .bd-payment-footer {
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .bd-total-block {
+        text-align: left;
+    }
+
+    .bd-card {
+        padding: 1.5rem;
+    }
+}

@@ -276,6 +276,20 @@ const BookingPage = () => {
                                     {bookingResult.status}
                                 </span>
                             </div>
+                            <div className="confirmation-row">
+                                <span className="label">Payment</span>
+                                <span className="value" style={{ color: 'var(--success)', textTransform: 'capitalize' }}>
+                                    {bookingResult.paymentStatus}
+                                </span>
+                            </div>
+                            {bookingResult.transactionId && (
+                                <div className="confirmation-row">
+                                    <span className="label">Transaction ID</span>
+                                    <span className="value booking-ref">
+                                        {bookingResult.transactionId}
+                                    </span>
+                                </div>
+                            )}
                         </div>
 
                         <div className="confirmation-actions">
@@ -563,6 +577,63 @@ const BookingPage = () => {
                                     <FaExclamationTriangle style={{ marginRight: '8px', color: 'var(--warning)' }} />
                                     <span>Full prepayment is required to confirm your booking. Amount: <strong>₹{getTotalPrice().toLocaleString('en-IN')}</strong></span>
                                 </div>
+
+                                {/* Payment Details Input (simulated) */}
+                                {paymentMethod && (
+                                    <div style={{ background: 'rgba(255,255,255,0.03)', padding: 'var(--spacing-lg)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.08)', marginTop: 'var(--spacing-lg)' }}>
+                                        <h4 style={{ color: 'var(--text-primary)', marginBottom: 'var(--spacing-md)', fontSize: 'var(--font-size-sm)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Payment Details</h4>
+                                        {paymentMethod === 'credit_card' || paymentMethod === 'debit_card' ? (
+                                            <div className="guest-form-grid">
+                                                <div className="form-group">
+                                                    <label className="form-label">Card Number</label>
+                                                    <input type="text" className="form-input" placeholder="4242 4242 4242 4242" maxLength={19} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="form-label">Cardholder Name</label>
+                                                    <input type="text" className="form-input" placeholder="John Doe" />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="form-label">Expiry Date</label>
+                                                    <input type="text" className="form-input" placeholder="MM/YY" maxLength={5} />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label className="form-label">CVV</label>
+                                                    <input type="password" className="form-input" placeholder="•••" maxLength={4} />
+                                                </div>
+                                            </div>
+                                        ) : paymentMethod === 'upi' ? (
+                                            <div className="form-group">
+                                                <label className="form-label">UPI ID</label>
+                                                <input type="text" className="form-input" placeholder="yourname@upi" />
+                                            </div>
+                                        ) : paymentMethod === 'net_banking' ? (
+                                            <div className="form-group">
+                                                <label className="form-label">Select Bank</label>
+                                                <select className="form-input" style={{ cursor: 'pointer' }}>
+                                                    <option value="">Select your bank</option>
+                                                    <option value="sbi">State Bank of India</option>
+                                                    <option value="hdfc">HDFC Bank</option>
+                                                    <option value="icici">ICICI Bank</option>
+                                                    <option value="axis">Axis Bank</option>
+                                                    <option value="kotak">Kotak Mahindra Bank</option>
+                                                    <option value="bob">Bank of Baroda</option>
+                                                </select>
+                                            </div>
+                                        ) : paymentMethod === 'wallet' ? (
+                                            <div className="form-group">
+                                                <label className="form-label">Select Wallet</label>
+                                                <select className="form-input" style={{ cursor: 'pointer' }}>
+                                                    <option value="">Select your wallet</option>
+                                                    <option value="paytm">Paytm</option>
+                                                    <option value="phonepe">PhonePe</option>
+                                                    <option value="amazon">Amazon Pay</option>
+                                                    <option value="mobikwik">MobiKwik</option>
+                                                </select>
+                                            </div>
+                                        ) : null}
+                                        <p style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-xs)', marginTop: 'var(--spacing-md)', fontStyle: 'italic' }}>This is a simulated payment. No real charges will be made.</p>
+                                    </div>
+                                )}
 
                                 <div className="form-actions">
                                     <button className="btn btn-ghost" onClick={handlePrevStep}>

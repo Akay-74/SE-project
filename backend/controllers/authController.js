@@ -314,3 +314,111 @@ export const setUserRole = async (req, res) => {
         });
     }
 };
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+export const updateProfile = async (req, res) => {
+    try {
+        const { name } = req.body;
+
+        if (!name || name.trim() === '') {
+            return res.status(400).json({
+                success: false,
+                message: 'Name is required',
+            });
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.user._id,
+            { name: name.trim() },
+            { new: true, runValidators: true }
+        ).select('-__v');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        res.json({
+            success: true,
+            data: {
+                id: user._id,
+                email: user.email,
+                name: user.name,
+                role: user.role,
+                avatar: user.avatar,
+            },
+            message: 'Profile updated successfully',
+        });
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error updating profile',
+        });
+    }
+};
+
+// @desc    Change password
+// @route   PUT /api/auth/change-password
+// @access  Private
+export const changePassword = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'Current password and new password are required',
+            });
+        }
+
+        if (newPassword.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: 'New password must be at least 6 characters',
+            });
+        }
+
+        const user = await User.findById(req.user._id).select('+password');
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+        if (user.authProvider === 'google') {
+            return res.status(400).json({
+                success: false,
+                message: 'Cannot change password for Google OAuth accounts',
+            });
+        }
+
+        const isMatch = await user.comparePassword(currentPassword);
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: 'Current password is incorrect',
+            });
+        }
+
+        user.password = newPassword;
+        await user.save();
+
+        res.json({
+            success: true,
+            message: 'Password changed successfully',
+        });
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error changing password',
+        });
+    }
+};

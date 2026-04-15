@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { hotelService } from '../services/hotelService';
+import { reviewService } from '../services/reviewService';
+import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
     FaMapMarkerAlt, FaStar, FaArrowLeft, FaWifi, FaParking,
@@ -11,8 +13,18 @@ import './HotelDetails.css';
 const HotelDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user, isAuthenticated } = useAuth();
     const [hotel, setHotel] = useState(null);
     const [rooms, setRooms] = useState([]);
+    // Reviews state
+    const [reviews, setReviews] = useState([]);
+    const [reviewsTotal, setReviewsTotal] = useState(0);
+    const [showReviewForm, setShowReviewForm] = useState(false);
+    const [reviewRating, setReviewRating] = useState(5);
+    const [reviewComment, setReviewComment] = useState('');
+    const [submittingReview, setSubmittingReview] = useState(false);
+    const [userReview, setUserReview] = useState(null);
+    const [reviewMsg, setReviewMsg] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [activeImage, setActiveImage] = useState(0);
@@ -22,10 +34,25 @@ const HotelDetails = () => {
     const fetchHotelDetails = async () => {
         try {
             setLoading(true);
-            const response = await hotelService.getHotelById(id);
-            setHotel(response.data);
-            setRooms(response.data.rooms || []);
+            const [hotelRes, roomsRes, reviewsRes] = await Promise.all([
+                hotelService.getHotelById(id),
+                hotelService.getRoomsByHotel(id),
+                reviewService.getHotelReviews(id, { limit: 20 }),
+            ]);
+            setHotel(hotelRes.data);
+            setRooms(roomsRes.data || []);
+            setReviews(reviewsRes.data || []);
+            setReviewsTotal(reviewsRes.pagination?.total || 0);
+
+            // Check if current user has already reviewed
+            if (isAuthenticated) {
+                try {
+                    const userRevRes = await reviewService.getUserReview(id);
+                    if (userRevRes.data) setUserReview(userRevRes.data);
+                } catch (e) { }
+            }
         } catch (err) {
+            console.error('Error fetching hotel details:', err);
             setError('Failed to load hotel details');
         } finally {
             setLoading(false);
@@ -171,7 +198,7 @@ const HotelDetails = () => {
                                             )}
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => navigate(`/booking/${room._id}`)}
+                                                onClick={() => navigate(`/book/${room._id}`)}
                                             >
                                                 Book Now — ₹{room.pricePerNight}/night
                                             </button>
@@ -195,6 +222,114 @@ const HotelDetails = () => {
                                 <p>{hotel.location?.city}, {hotel.location?.state} {hotel.location?.pincode}</p>
                             </div>
                         </div>
+                    </section>
+
+                    {/* Reviews Section */}
+                    <section className="hotel-section">
+                        <h2><FaStar /> Reviews ({reviewsTotal})</h2>
+
+                        {reviewMsg && (
+                            <div style={{ background: 'rgba(16,185,129,0.15)', color: '#10b981', padding: 'var(--spacing-md)', borderRadius: 'var(--radius-md)', marginBottom: 'var(--spacing-lg)' }}>
+                                {reviewMsg}
+                            </div>
+                        )}
+
+                        {/* Review Form */}
+                        {isAuthenticated && !userReview && (
+                            <div style={{ marginBottom: 'var(--spacing-xl)' }}>
+                                {!showReviewForm ? (
+                                    <button className="btn btn-primary btn-sm" onClick={() => setShowReviewForm(true)}>
+                                        <FaStar /> Write a Review
+                                    </button>
+                                ) : (
+                                    <div style={{ background: 'rgba(255,255,255,0.03)', padding: 'var(--spacing-lg)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                                        <h4 style={{ color: 'var(--text-primary)', marginBottom: 'var(--spacing-md)' }}>Write Your Review</h4>
+                                        <form onSubmit={async (e) => {
+                                            e.preventDefault();
+                                            try {
+                                                setSubmittingReview(true);
+                                                await reviewService.createReview({ hotel: id, rating: reviewRating, comment: reviewComment });
+                                                setReviewMsg('Review submitted successfully!');
+                                                setShowReviewForm(false);
+                                                setReviewComment('');
+                                                // Refresh
+                                                const [revRes, userRevRes] = await Promise.all([
+                                                    reviewService.getHotelReviews(id, { limit: 20 }),
+                                                    reviewService.getUserReview(id),
+                                                ]);
+                                                setReviews(revRes.data || []);
+                                                setReviewsTotal(revRes.pagination?.total || 0);
+                                                if (userRevRes.data) setUserReview(userRevRes.data);
+                                                setTimeout(() => setReviewMsg(''), 3000);
+                                            } catch (err) {
+                                                setReviewMsg(err.response?.data?.message || 'Failed to submit review');
+                                                setTimeout(() => setReviewMsg(''), 4000);
+                                            } finally {
+                                                setSubmittingReview(false);
+                                            }
+                                        }}>
+                                            <div style={{ display: 'flex', gap: '4px', marginBottom: 'var(--spacing-md)' }}>
+                                                {[1, 2, 3, 4, 5].map(s => (
+                                                    <button key={s} type="button" onClick={() => setReviewRating(s)} style={{
+                                                        background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.5rem', padding: 0,
+                                                        color: s <= reviewRating ? '#f59e0b' : 'rgba(255,255,255,0.15)', transition: 'transform 0.2s'
+                                                    }}><FaStar /></button>
+                                                ))}
+                                                <span style={{ marginLeft: '8px', color: 'var(--text-secondary)', fontWeight: 600 }}>{reviewRating}/5</span>
+                                            </div>
+                                            <textarea
+                                                value={reviewComment}
+                                                onChange={e => setReviewComment(e.target.value)}
+                                                placeholder="Share your experience..."
+                                                rows="3"
+                                                required
+                                                minLength={10}
+                                                style={{ width: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 'var(--radius-md)', padding: 'var(--spacing-md)', color: 'var(--text-primary)', fontFamily: 'inherit', resize: 'vertical' }}
+                                            />
+                                            <div style={{ display: 'flex', gap: 'var(--spacing-md)', justifyContent: 'flex-end', marginTop: 'var(--spacing-md)' }}>
+                                                <button type="button" className="btn btn-ghost btn-sm" onClick={() => setShowReviewForm(false)}>Cancel</button>
+                                                <button type="submit" className="btn btn-primary btn-sm" disabled={submittingReview}>
+                                                    {submittingReview ? 'Submitting...' : 'Submit'}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {userReview && (
+                            <div style={{ background: 'rgba(139,92,246,0.08)', padding: 'var(--spacing-lg)', borderRadius: 'var(--radius-lg)', marginBottom: 'var(--spacing-lg)', border: '1px solid rgba(139,92,246,0.2)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: 'var(--spacing-sm)' }}>
+                                    <strong style={{ color: 'var(--text-primary)', marginRight: '8px' }}>Your Review</strong>
+                                    {[1, 2, 3, 4, 5].map(s => <FaStar key={s} style={{ color: s <= userReview.rating ? '#f59e0b' : 'rgba(255,255,255,0.15)', fontSize: '0.9rem' }} />)}
+                                </div>
+                                <p style={{ color: 'var(--text-secondary)', fontStyle: 'italic' }}>{userReview.comment}</p>
+                            </div>
+                        )}
+
+                        {/* Reviews List */}
+                        {reviews.length === 0 ? (
+                            <p style={{ color: 'var(--text-muted)', textAlign: 'center', padding: 'var(--spacing-xl)' }}>No reviews yet. Be the first to review!</p>
+                        ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-md)' }}>
+                                {reviews.filter(r => r._id !== userReview?._id).map(review => (
+                                    <div key={review._id} style={{ background: 'rgba(255,255,255,0.03)', padding: 'var(--spacing-lg)', borderRadius: 'var(--radius-lg)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-md)', marginBottom: 'var(--spacing-sm)' }}>
+                                            <img src={review.user?.avatar} alt="" style={{ width: 32, height: 32, borderRadius: '50%' }} />
+                                            <strong style={{ color: 'var(--text-primary)' }}>{review.user?.name}</strong>
+                                            <div style={{ display: 'flex', gap: '2px', marginLeft: 'auto' }}>
+                                                {[1, 2, 3, 4, 5].map(s => <FaStar key={s} style={{ color: s <= review.rating ? '#f59e0b' : 'rgba(255,255,255,0.15)', fontSize: '0.8rem' }} />)}
+                                            </div>
+                                        </div>
+                                        <p style={{ color: 'var(--text-secondary)', fontSize: 'var(--font-size-sm)' }}>{review.comment}</p>
+                                        <span style={{ color: 'var(--text-muted)', fontSize: 'var(--font-size-xs)', marginTop: 'var(--spacing-sm)', display: 'block' }}>
+                                            {new Date(review.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </section>
                 </div>
 

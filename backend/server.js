@@ -16,6 +16,7 @@ import hotelRoutes from './routes/hotels.js';
 import roomRoutes from './routes/rooms.js';
 import bookingRoutes from './routes/bookings.js';
 import adminRoutes from './routes/admin.js';
+import reviewRoutes from './routes/reviews.js';
 
 // Load environment variables
 dotenv.config();
@@ -74,6 +75,7 @@ app.use('/api/hotels', hotelRoutes);
 app.use('/api/rooms', roomRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {

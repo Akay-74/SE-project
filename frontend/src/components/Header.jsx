@@ -22,13 +22,13 @@ const Header = () => {
                             <FaHotel />
                         </div>
                         <span>Kamra<em>.com</em></span>
-                    </Link> 
+                    </Link>
 
                     {/* Nav */}
                     <nav className="nav">
                         <Link to="/" className="nav-link">Home</Link>
                         <Link to="/search" className="nav-link">
-                             Search Hotels
+                            Search Hotels
                         </Link>
                         {isAuthenticated && (
                             <>
@@ -49,7 +49,7 @@ const Header = () => {
                     <div className="header-actions">
                         {isAuthenticated ? (
                             <div className="user-menu">
-                                <div className="user-info">
+                                <Link to="/profile" className="user-info" style={{ textDecoration: 'none' }}>
                                     <img
                                         src={getAvatarUrl()}
                                         alt={user.name}
@@ -59,7 +59,7 @@ const Header = () => {
                                         }}
                                     />
                                     <span className="user-name">{user.name}</span>
-                                </div>
+                                </Link>
                                 <button onClick={logout} className="btn btn-outline btn-sm">
                                     <FaSignOutAlt /> Logout
                                 </button>

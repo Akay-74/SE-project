@@ -15,6 +15,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import Search from './pages/Search';
 import HotelDetails from './pages/HotelDetails';
 import BookingPage from './pages/BookingPage';
+import ProfilePage from './pages/ProfilePage';
+import BookingDetail from './pages/BookingDetail';
 import './App.css';
 
 function App() {
@@ -37,7 +39,7 @@ function App() {
 
                                 {/* Protected User Routes */}
                                 <Route
-                                    path="/booking/:roomId"
+                                    path="/book/:roomId"
                                     element={
                                         <ProtectedRoute>
                                             <BookingPage />
@@ -49,6 +51,30 @@ function App() {
                                     element={
                                         <ProtectedRoute>
                                             <UserDashboard />
+                                        </ProtectedRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/dashboard"
+                                    element={
+                                        <ProtectedRoute>
+                                            <UserDashboard />
+                                        </ProtectedRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/booking/:id"
+                                    element={
+                                        <ProtectedRoute>
+                                            <BookingDetail />
+                                        </ProtectedRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/profile"
+                                    element={
+                                        <ProtectedRoute>
+                                            <ProfilePage />
                                         </ProtectedRoute>
                                     }
                                 />
