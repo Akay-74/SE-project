@@ -1,0 +1,6 @@
+# Core Selenium + testing
+selenium==4.21.0
+pytest==8.2.0
+pytest-html==4.1.1          # HTML test report
+webdriver-manager==4.0.1    # auto-downloads chromedriver
+python-dotenv==1.0.1        # loads .env file
